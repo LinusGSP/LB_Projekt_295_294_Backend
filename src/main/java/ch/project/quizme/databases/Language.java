@@ -10,7 +10,7 @@ public class Language {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    private Long id;
+    private Integer id;
 
     @NotEmpty(message = "language name can't be empty")
     @Size(min = 1, max = 50, message = "language name must be between 1 and 50 characters")
@@ -21,14 +21,6 @@ public class Language {
     @NotEmpty(message = "language flag can't be empty")
     @Column(name = "flag", nullable = false, length = 1)
     private String flag;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
