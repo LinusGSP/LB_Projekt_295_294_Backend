@@ -31,16 +31,8 @@ public class LearnSetController {
         return learnSet.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
     }
     @PostMapping(path = "")
-    public ResponseEntity<String> createLearnSet(@Valid @RequestBody String name,
-                                                 @Valid @RequestBody Language first_language_id,
-                                                 @Valid @RequestBody Language second_language_id){
-        LearnSet learnSet = new LearnSet();
-        learnSet.setName(name);
-        learnSet.setFirstLanguage(first_language_id);
-        learnSet.setSecondLanguage(second_language_id);
-
+    public ResponseEntity<String> createLearnSet(@Valid @RequestBody LearnSet learnSet){
         learnSetRepository.save(learnSet);
-
         return ResponseEntity.ok("Success");
     }
 }
