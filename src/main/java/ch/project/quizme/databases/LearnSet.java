@@ -14,17 +14,17 @@ public class LearnSet {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotEmpty(message = "Name can't be empty")
-    @Size(min = 1, max = 50, message = "Name must be between 1 and 256 characters")
+    @NotEmpty(message = "learn_set name can't be empty")
+    @Size(min = 1, max = 50, message = "learn_set name must be between 1 and 50 characters")
     @Column(name = "name", nullable = false, length = 256)
     private String name;
 
-    @NotNull
+    @NotNull(message = "first language can't be empty")
     @ManyToOne(optional = false)
     @JoinColumn(name = "first_language_id", nullable = false)
     private Language firstLanguage;
 
-    @NotNull
+    @NotNull(message = "second language can't be empty")
     @ManyToOne(optional = false)
     @JoinColumn(name = "second_language_id", nullable = false)
     private Language secondLanguage;
