@@ -2,6 +2,7 @@ package ch.project.quizme.controller;
 
 
 import ch.project.quizme.databases.Language;
+import ch.project.quizme.exceptions.LanguageNotFoundException;
 import ch.project.quizme.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,7 @@ public class LanguageController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<Language> getAllLanguageById(@Valid @PathVariable Integer id){
         Optional<Language> languages = languageRepository.findById(id);
-        return languages.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(languages.orElseThrow(() -> new LanguageNotFoundException(id)));
     }
 
 

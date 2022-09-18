@@ -40,17 +40,16 @@ public class LearnSetController {
                                                  @Valid @RequestParam Integer language1_id,
                                                  @Valid @RequestParam Integer language2_id) {
 
+
+        if (language1_id.equals(language2_id)){ throw new IdenticalLanguageException(language1_id, language2_id);}
+
         Optional<Language> language1 = languageRepository.findById(language1_id);
         Optional<Language> language2 = languageRepository.findById(language2_id);
 
-        if (language1.isEmpty()){ throw new LanguageNotFoundException(language1_id);}
-        if (language2.isEmpty()){ throw new LanguageNotFoundException(language2_id);}
-        if (language1_id.equals(language2_id)){ throw new IdenticalLanguageException(language1_id, language2_id);}
-
         LearnSet learnSet = new LearnSet();
         learnSet.setName(name);
-        learnSet.setLanguage1(language1.orElseThrow());
-        learnSet.setLanguage2(language2.orElseThrow());
+        learnSet.setLanguage1(language1.orElseThrow(() -> new LanguageNotFoundException((language1_id))));
+        learnSet.setLanguage2(language2.orElseThrow(() -> new LanguageNotFoundException((language2_id))));
         learnSet.setCreationDate();
         learnSet.setLastEdited();
 
