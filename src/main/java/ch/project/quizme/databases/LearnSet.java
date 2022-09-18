@@ -18,8 +18,8 @@ public class LearnSet {
     private Integer id;
 
     @NotEmpty(message = "learn_set name can't be empty")
-    @Size(min = 1, max = 50, message = "learn_set name must be between 1 and 50 characters")
-    @Column(name = "name", nullable = false, length = 256)
+    @Size(min = 1, max = 64, message = "learn_set name must be between 1 and 64 characters")
+    @Column(name = "name", nullable = false, length = 64)
     private String name;
 
     @NotNull(message = "first language can't be empty")
