@@ -31,10 +31,16 @@ public class LanguageController {
 
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLanguage(@Valid @RequestBody Language language){
-        languageRepository.save(language);
-        return ResponseEntity.ok("Success");
+    public ResponseEntity<String> createLanguage(@Valid @RequestParam String name,
+                                                 @Valid @RequestParam String flag){
 
+        Language language = new Language();
+        language.setName(name);
+        language.setFlag(flag);
+
+        languageRepository.save(language);
+
+        return ResponseEntity.ok("Success");
     }
 
     @DeleteMapping(path = "/{id}")

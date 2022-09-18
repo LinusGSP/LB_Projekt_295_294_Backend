@@ -1,5 +1,8 @@
 package ch.project.quizme.databases;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -22,12 +25,12 @@ public class LearnSet {
     @NotNull(message = "first language can't be empty")
     @ManyToOne(optional = false)
     @JoinColumn(name = "first_language_id", nullable = false)
-    private Language firstLanguage;
+    private Language language1;
 
     @NotNull(message = "second language can't be empty")
     @ManyToOne(optional = false)
     @JoinColumn(name = "second_language_id", nullable = false)
-    private Language secondLanguage;
+    private Language language2;
 
     @Column(name = "creation_date")
     private Date creationDate;
@@ -51,30 +54,31 @@ public class LearnSet {
         this.name = name;
     }
 
-    public Language getFirstLanguage() {
-        return firstLanguage;
+    public Language getLanguage1() {
+        return language1;
     }
 
-    public void setFirstLanguage(Language firstLanguage) {
-        this.firstLanguage = firstLanguage;
+    public void setLanguage1(Language language1) {
+        this.language1 = language1;
     }
 
-    public Language getSecondLanguage() {
-        return secondLanguage;
+    public Language getLanguage2() {
+        return language2;
     }
 
-    public void setSecondLanguage(Language secondLanguage) {
-        this.secondLanguage = secondLanguage;
+    public void setLanguage2(Language language2) {
+        this.language2 = language2;
     }
 
+    @JsonSerialize(using = DateSerializer.class)
     public Date getCreationDate() {
         return creationDate;
     }
 
     public void setCreationDate() {
-        this.creationDate = new Date();;
+        this.creationDate = new Date();
     }
-
+    @JsonSerialize(using = DateSerializer.class)
     public Date getLastEdited() {
         return lastEdited;
     }
