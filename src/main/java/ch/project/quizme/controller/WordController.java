@@ -4,6 +4,7 @@ package ch.project.quizme.controller;
 import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.databases.Word;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
+import ch.project.quizme.exceptions.WordFailedSaveException;
 import ch.project.quizme.exceptions.WordNotFoundException;
 import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.WordRepository;
@@ -60,6 +61,16 @@ public class WordController {
         Word createdWord = wordRepository.save(word);
 
         return ResponseEntity.ok("Success: id="+ createdWord.getId() + ", learnSet=" + id + ", word1=" + word1 + ", word2=" + word2);
+    }
+
+    @PostMapping(path = "")
+    public ResponseEntity<String> createNewWords(@RequestBody Iterable<Word> words){
+        try {
+            wordRepository.saveAll(words);
+        } catch (IllegalArgumentException e){
+            throw new WordFailedSaveException();
+        }
+        return ResponseEntity.ok("Success: saved");
     }
 
     //TODO CREATE MULTIPLE POST MAPPING USING BODY PARAMETER

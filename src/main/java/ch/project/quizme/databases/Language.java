@@ -17,9 +17,9 @@ public class Language {
     @Column(name = "name", nullable = false, length = 32)
     private String name;
 
-    @Size(min = 1, max = 1, message = "language flag must be of size 1")
+    @Size(min = 2, max = 2, message = "language flag must be of size 2")
     @NotEmpty(message = "language flag can't be empty")
-    @Column(name = "flag", nullable = false, length = 1)
+    @Column(name = "flag", nullable = false, length = 2)
     private String flag;
 
     public String getName() {
