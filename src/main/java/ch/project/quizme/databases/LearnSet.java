@@ -24,12 +24,12 @@ public class LearnSet {
 
     @NotNull(message = "first language can't be empty")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "first_language_id", nullable = false)
+    @JoinColumn(name = "language1", nullable = false)
     private Language language1;
 
     @NotNull(message = "second language can't be empty")
     @ManyToOne(optional = false)
-    @JoinColumn(name = "second_language_id", nullable = false)
+    @JoinColumn(name = "language2", nullable = false)
     private Language language2;
 
     @Column(name = "creation_date")

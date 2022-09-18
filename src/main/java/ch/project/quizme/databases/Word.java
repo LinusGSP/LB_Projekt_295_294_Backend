@@ -1,5 +1,7 @@
 package ch.project.quizme.databases;
 
+import net.bytebuddy.implementation.bind.annotation.Default;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -21,11 +23,13 @@ public class Word {
     @Column(name = "word2", nullable = false, length = 256)
     private String word2;
 
-    @Positive(message = "learnSetId must be positive")
-    @NotNull(message = "learnSetId cant be null")
-    @ManyToOne(optional = false)
-    @Column(name = "learn_set_id", nullable = false)
+    @NotNull(message = "learnSet cant be null")
+    @ManyToOne(targetEntity = LearnSet.class)
+    @JoinColumn(name = "learn_set_id", nullable = false)
     private Integer learnSetId;
+
+    @Column(name = "marked", nullable = true)
+    private Boolean marked = false;
 
     public Boolean getMarked() {
         return marked;
@@ -34,9 +38,6 @@ public class Word {
     public void setMarked(Boolean marked) {
         this.marked = marked;
     }
-
-    @Column(name = "marked", nullable = true)
-    private Boolean marked;
 
     public Integer getId() {
         return id;

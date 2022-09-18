@@ -3,6 +3,7 @@ package ch.project.quizme.controller;
 
 import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.databases.Word;
+import ch.project.quizme.exceptions.LanguageNotFoundException;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.exceptions.WordNotFoundException;
 import ch.project.quizme.repository.LearnSetRepository;
@@ -24,7 +25,6 @@ public class WordController {
     @Autowired
     LearnSetRepository learnSetRepository;
 
-
     @GetMapping(path = "")
     public ResponseEntity<Iterable<Word>> getAllWords(){
         Optional<Iterable<Word>> words = Optional.of(wordRepository.findAll());
@@ -39,7 +39,7 @@ public class WordController {
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Iterable<Word>> getLearnSetWords(@Valid @PathVariable("id") Integer id){
-        Optional<Iterable<Word>> words = Optional.of(wordRepository.findLearnSetWords(id));
+        Optional<Iterable<Word>> words = Optional.of(wordRepository.findBylearnSetId(id));
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -63,6 +63,8 @@ public class WordController {
         return ResponseEntity.ok("Success: id="+ createdWord.getId() + ", learnSet=" + id + ", word1=" + word1 + ", word2=" + word2);
     }
 
+    //TODO CREATE MULTIPLE POST MAPPING USING BODY PARAMETER
+
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteWord(@Valid @PathVariable("id") Integer id){
         try {
@@ -72,7 +74,4 @@ public class WordController {
         }
         return ResponseEntity.ok("Success: Deleted word with id=" + id);
     }
-
-
-
 }
