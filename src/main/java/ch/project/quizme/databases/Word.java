@@ -27,6 +27,16 @@ public class Word {
     @Column(name = "learn_set_id", nullable = false)
     private Integer learnSetId;
 
+    public Boolean getMarked() {
+        return marked;
+    }
+
+    public void setMarked(Boolean marked) {
+        this.marked = marked;
+    }
+
+    @Column(name = "marked", nullable = true)
+    private Boolean marked;
 
     public Integer getId() {
         return id;

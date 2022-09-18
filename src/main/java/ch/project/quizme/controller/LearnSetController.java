@@ -64,4 +64,15 @@ public class LearnSetController {
                         ",language1_id=" + language1_id +
                         ",language2_id=" + language2_id);
     }
+
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<String> deleteLearnSetById(@Valid @PathVariable("id") Integer id){
+        try {
+            learnSetRepository.deleteById(id);
+        } catch (IllegalArgumentException e){
+            throw new LearnSetNotFoundException(id);
+        }
+        return ResponseEntity.ok("Success: Deleted LearnSet with id="+ id);
+    }
 }
