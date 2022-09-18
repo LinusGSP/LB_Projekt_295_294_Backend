@@ -1,9 +1,9 @@
 package ch.project.quizme.databases;
 
-import net.bytebuddy.implementation.bind.annotation.Default;
-
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "word")
@@ -28,7 +28,7 @@ public class Word {
     @JoinColumn(name = "learn_set_id", nullable = false)
     private Integer learnSetId;
 
-    @Column(name = "marked", nullable = true)
+    @Column(name = "marked")
     private Boolean marked = false;
 
     public Boolean getMarked() {

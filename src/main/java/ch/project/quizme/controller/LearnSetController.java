@@ -65,7 +65,6 @@ public class LearnSetController {
                         ",language2_id=" + language2_id);
     }
 
-
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteLearnSetById(@Valid @PathVariable("id") Integer id){
         try {

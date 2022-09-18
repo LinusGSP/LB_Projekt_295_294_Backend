@@ -3,7 +3,6 @@ package ch.project.quizme.controller;
 
 import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.databases.Word;
-import ch.project.quizme.exceptions.LanguageNotFoundException;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.exceptions.WordNotFoundException;
 import ch.project.quizme.repository.LearnSetRepository;
