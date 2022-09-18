@@ -2,7 +2,9 @@ package ch.project.quizme.controller;
 
 
 import ch.project.quizme.databases.Language;
+import ch.project.quizme.exceptions.LanguageFailedSaveException;
 import ch.project.quizme.exceptions.LanguageNotFoundException;
+import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +41,21 @@ public class LanguageController {
         language.setName(name);
         language.setFlag(flag);
 
-        languageRepository.save(language);
-
+        try {
+            languageRepository.save(language);
+        }catch (Exception e){
+            throw new LanguageFailedSaveException(name);
+        }
         return ResponseEntity.ok("Success");
     }
 
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteLanguage(@Valid @PathVariable Integer id){
-        languageRepository.deleteById(id);
+        try {
+            languageRepository.deleteById(id);
+        } catch (IllegalArgumentException e){
+            throw new LanguageNotFoundException(id);
+        }
         return ResponseEntity.ok("Success");
 
     }

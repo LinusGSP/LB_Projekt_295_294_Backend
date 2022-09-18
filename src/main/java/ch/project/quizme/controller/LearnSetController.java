@@ -4,8 +4,8 @@ import ch.project.quizme.databases.Language;
 import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.exceptions.IdenticalLanguageException;
 import ch.project.quizme.exceptions.LanguageNotFoundException;
-import ch.project.quizme.exceptions.LearnSetCouldNotBeFoundException;
-import ch.project.quizme.exceptions.LearnSetCouldNotBeSavedException;
+import ch.project.quizme.exceptions.LearnSetNotFoundException;
+import ch.project.quizme.exceptions.LearnSetFailedSaveException;
 import ch.project.quizme.repository.LanguageRepository;
 import ch.project.quizme.repository.LearnSetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +32,7 @@ public class LearnSetController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<LearnSet> getLearnSetById(@Valid @PathVariable("id") Integer id){
         Optional<LearnSet> learnSet = learnSetRepository.findById(id);
-        return ResponseEntity.ok(learnSet.orElseThrow(() -> new LearnSetCouldNotBeFoundException(id)));
+        return ResponseEntity.ok(learnSet.orElseThrow(() -> new LearnSetNotFoundException(id)));
     }
 
     @PostMapping(path = "")
@@ -56,7 +56,7 @@ public class LearnSetController {
         try {
             learnSetRepository.save(learnSet);
         } catch (Exception e){
-            throw new LearnSetCouldNotBeSavedException(name);
+            throw new LearnSetFailedSaveException(name);
         }
         return ResponseEntity.ok(
                 "Success: Created new LearnSet with: " +
