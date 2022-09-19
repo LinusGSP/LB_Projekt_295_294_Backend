@@ -1,5 +1,8 @@
 package ch.project.quizme.databases;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
@@ -9,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "learn_set")
@@ -33,8 +37,10 @@ public class LearnSet {
     @JoinColumn(name = "language2", nullable = false)
     private Language language2;
 
-    @OneToMany(mappedBy = "learnSet")
-    private List<Word> words;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "learnSet", fetch = FetchType.LAZY)
+    private Set<Word> words;
+
     @Column(name = "creation_date")
     private Date creationDate = new Date();
 
@@ -88,5 +94,13 @@ public class LearnSet {
 
     public void setLastEdited() {
         this.lastEdited = new Date();;
+    }
+
+    public Set<Word> getWords() {
+        return words;
+    }
+
+    public void setWords(Set<Word> words) {
+        this.words = words;
     }
 }

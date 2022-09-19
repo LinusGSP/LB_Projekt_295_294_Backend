@@ -1,5 +1,9 @@
 package ch.project.quizme.databases;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
@@ -23,8 +27,9 @@ public class Word {
     @Column(name = "word2", nullable = false, length = 256)
     private String word2;
 
+    @JsonBackReference
     @NotNull(message = "learnSet cant be null")
-    @ManyToOne(targetEntity = LearnSet.class, optional = false)
+    @ManyToOne(targetEntity = LearnSet.class, fetch = FetchType.LAZY)
     private LearnSet learnSet;
 
     @Column(name = "marked")
