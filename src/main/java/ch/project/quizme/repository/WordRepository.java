@@ -5,5 +5,5 @@ import ch.project.quizme.databases.Word;
 import org.springframework.data.repository.CrudRepository;
 
 public interface WordRepository extends CrudRepository<Word, Integer> {
-    Iterable<Word> findBylearnSetId(Integer learnSetId);
+    Iterable<Word> findByLearnSetId(Integer learnSetId);
 }

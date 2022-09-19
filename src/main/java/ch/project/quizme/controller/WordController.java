@@ -31,15 +31,15 @@ public class WordController {
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @GetMapping(path = "/{word_id}")
+    @GetMapping(path = "/{id}")
     public ResponseEntity<Word> getWord(@Valid @PathVariable("word_id") Integer word_id){
         Optional<Word> word = wordRepository.findById(word_id);
         return ResponseEntity.ok(word.orElseThrow(() -> new WordNotFoundException(word_id)));
     }
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/set/{id}")
     public ResponseEntity<Iterable<Word>> getLearnSetWords(@Valid @PathVariable("id") Integer id){
-        Optional<Iterable<Word>> words = Optional.of(wordRepository.findBylearnSetId(id));
+        Optional<Iterable<Word>> words = Optional.of(wordRepository.findByLearnSetId(id));
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -54,6 +54,7 @@ public class WordController {
 
         Word word = new Word();
         word.setLearnSet(learnSetRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id)));
+        word.setLearnSetId(id);
         word.setWord1(word1);
         word.setWord2(word2);
         word.setMarked(false);
@@ -63,7 +64,7 @@ public class WordController {
         return ResponseEntity.ok("Success: id="+ createdWord.getId() + ", learnSet=" + id + ", word1=" + word1 + ", word2=" + word2);
     }
 
-    @PostMapping(path = "")
+    @PostMapping(path = "/set")
     public ResponseEntity<String> createNewWords(@RequestBody Iterable<Word> words){
         try {
             wordRepository.saveAll(words);
@@ -72,9 +73,6 @@ public class WordController {
         }
         return ResponseEntity.ok("Success: saved");
     }
-
-    //TODO CREATE MULTIPLE POST MAPPING USING BODY PARAMETER
-
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteWord(@Valid @PathVariable("id") Integer id){
         try {
