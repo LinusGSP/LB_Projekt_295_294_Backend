@@ -53,7 +53,7 @@ public class WordController {
         if (learnSet.isEmpty()) {throw new LearnSetNotFoundException(id); }
 
         Word word = new Word();
-        word.setLearnSetId(id);
+        word.setLearnSet(learnSetRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id)));
         word.setWord1(word1);
         word.setWord2(word2);
         word.setMarked(false);

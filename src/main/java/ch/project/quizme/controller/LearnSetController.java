@@ -2,7 +2,7 @@ package ch.project.quizme.controller;
 
 import ch.project.quizme.databases.Language;
 import ch.project.quizme.databases.LearnSet;
-import ch.project.quizme.exceptions.IdenticalLanguageException;
+import ch.project.quizme.exceptions.LanguageIdenticalException;
 import ch.project.quizme.exceptions.LanguageNotFoundException;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.exceptions.LearnSetFailedSaveException;
@@ -41,7 +41,7 @@ public class LearnSetController {
                                                  @Valid @RequestParam Integer language2_id) {
 
 
-        if (language1_id.equals(language2_id)){ throw new IdenticalLanguageException(language1_id, language2_id);}
+        if (language1_id.equals(language2_id)){ throw new LanguageIdenticalException(language1_id, language2_id);}
 
         Optional<Language> language1 = languageRepository.findById(language1_id);
         Optional<Language> language2 = languageRepository.findById(language2_id);

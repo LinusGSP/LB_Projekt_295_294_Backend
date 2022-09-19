@@ -8,6 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "learn_set")
@@ -23,15 +24,17 @@ public class LearnSet {
     private String name;
 
     @NotNull(message = "first language can't be empty")
-    @ManyToOne(optional = false)
+    @ManyToOne(targetEntity = Language.class, optional = false)
     @JoinColumn(name = "language1", nullable = false)
     private Language language1;
 
     @NotNull(message = "second language can't be empty")
-    @ManyToOne(optional = false)
+    @ManyToOne(targetEntity = Language.class, optional = false)
     @JoinColumn(name = "language2", nullable = false)
     private Language language2;
 
+    @OneToMany(mappedBy = "learnSet")
+    private List<Word> words;
     @Column(name = "creation_date")
     private Date creationDate = new Date();
 

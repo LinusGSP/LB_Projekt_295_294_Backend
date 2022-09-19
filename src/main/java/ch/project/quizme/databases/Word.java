@@ -24,9 +24,8 @@ public class Word {
     private String word2;
 
     @NotNull(message = "learnSet cant be null")
-    @ManyToOne(targetEntity = LearnSet.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "learn_set_id", nullable = false)
-    private Integer learnSetId;
+    @ManyToOne(targetEntity = LearnSet.class, optional = false)
+    private LearnSet learnSet;
 
     @Column(name = "marked")
     private Boolean marked = false;
@@ -63,11 +62,11 @@ public class Word {
         this.word2 = word2;
     }
 
-    public Integer getLearnSetId() {
-        return learnSetId;
+    public LearnSet getLearnSet() {
+        return learnSet;
     }
 
-    public void setLearnSetId(Integer learnSetId) {
-        this.learnSetId = learnSetId;
+    public void setLearnSet(LearnSet learnSet) {
+        this.learnSet = learnSet;
     }
 }

@@ -22,6 +22,14 @@ public class Language {
     @Column(name = "flag", nullable = false, length = 2)
     private String flag;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
