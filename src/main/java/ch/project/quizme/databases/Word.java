@@ -27,10 +27,14 @@ public class Word {
     @Column(name = "word2", nullable = false, length = 256)
     private String word2;
 
-    @JsonBackReference
+    @JsonIgnore
     @NotNull(message = "learnSet cant be null")
     @ManyToOne(targetEntity = LearnSet.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "learnSet_id")
     private LearnSet learnSet;
+
+    @Column(name = "learnSet_id", insertable = false, updatable = false)
+    private Integer learnSetId;
 
     @Column(name = "marked")
     private Boolean marked = false;
@@ -73,5 +77,13 @@ public class Word {
 
     public void setLearnSet(LearnSet learnSet) {
         this.learnSet = learnSet;
+    }
+
+    public Integer getLearnSetId() {
+        return learnSetId;
+    }
+
+    public void setLearnSetId(Integer learnSetId) {
+        this.learnSetId = learnSetId;
     }
 }

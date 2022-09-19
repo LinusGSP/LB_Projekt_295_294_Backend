@@ -37,10 +37,6 @@ public class LearnSet {
     @JoinColumn(name = "language2", nullable = false)
     private Language language2;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "learnSet", fetch = FetchType.LAZY)
-    private Set<Word> words;
-
     @Column(name = "creation_date")
     private Date creationDate = new Date();
 
@@ -94,13 +90,5 @@ public class LearnSet {
 
     public void setLastEdited() {
         this.lastEdited = new Date();;
-    }
-
-    public Set<Word> getWords() {
-        return words;
-    }
-
-    public void setWords(Set<Word> words) {
-        this.words = words;
     }
 }
