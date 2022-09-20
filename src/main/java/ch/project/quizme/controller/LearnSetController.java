@@ -70,7 +70,7 @@ public class LearnSetController {
     public ResponseEntity<String> deleteLearnSetById(@Valid @PathVariable("id") Integer id){
         try {
             learnSetRepository.deleteById(id);
-        } catch (IllegalArgumentException e){
+        } catch (Exception e){
             throw new LearnSetNotFoundException(id);
         }
         return ResponseEntity.ok("Success: Deleted LearnSet with id="+ id);

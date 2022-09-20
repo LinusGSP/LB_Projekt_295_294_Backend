@@ -96,7 +96,7 @@ public class WordController {
     public ResponseEntity<String> deleteWord(@Valid @PathVariable("id") Integer id){
         try {
             wordRepository.deleteById(id);
-        } catch (IllegalArgumentException e){
+        } catch (Exception e){
             throw new WordNotFoundException(id);
         }
         return ResponseEntity.ok("Success: Deleted word with id=" + id);
