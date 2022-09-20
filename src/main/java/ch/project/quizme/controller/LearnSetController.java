@@ -5,7 +5,7 @@ import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.exceptions.LanguageIdenticalException;
 import ch.project.quizme.exceptions.LanguageNotFoundException;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
-import ch.project.quizme.exceptions.LearnSetFailedSaveException;
+import ch.project.quizme.exceptions.LearnSetFailedToSaveException;
 import ch.project.quizme.repository.LanguageRepository;
 import ch.project.quizme.repository.LearnSetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class LearnSetController {
         try {
             learnSetRepository.save(learnSet);
         } catch (Exception e){
-            throw new LearnSetFailedSaveException(name);
+            throw new LearnSetFailedToSaveException(name);
         }
         return ResponseEntity.ok(
                 "Success: saved");

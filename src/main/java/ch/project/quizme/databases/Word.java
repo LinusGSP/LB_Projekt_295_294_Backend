@@ -23,19 +23,11 @@ public class Word {
     @JoinColumn(name = "learnSet_id")
     private LearnSet learnSet;
 
-    @Column(name = "learnSet_id", insertable = false, updatable = false)
+    @Column(name = "learnSet_id", insertable = false, updatable = false, nullable = false)
     private Integer learnSetId;
 
     @Column(name = "marked")
     private Boolean marked = false;
-
-    public Boolean getMarked() {
-        return marked;
-    }
-
-    public void setMarked(Boolean marked) {
-        this.marked = marked;
-    }
 
     public Integer getId() {
         return id;
@@ -75,5 +67,13 @@ public class Word {
 
     public void setLearnSetId(Integer learnSetId) {
         this.learnSetId = learnSetId;
+    }
+
+    public Boolean getMarked() {
+        return marked;
+    }
+
+    public void setMarked(Boolean marked) {
+        this.marked = marked;
     }
 }

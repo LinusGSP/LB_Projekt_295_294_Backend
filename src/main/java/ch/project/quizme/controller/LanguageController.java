@@ -2,7 +2,7 @@ package ch.project.quizme.controller;
 
 
 import ch.project.quizme.databases.Language;
-import ch.project.quizme.exceptions.LanguageFailedSaveException;
+import ch.project.quizme.exceptions.LanguageFailedToSaveException;
 import ch.project.quizme.exceptions.LanguageNotFoundException;
 import ch.project.quizme.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +40,7 @@ public class LanguageController {
         try {
             languageRepository.save(language);
         }catch (Exception e){
-            throw new LanguageFailedSaveException(name);
+            throw new LanguageFailedToSaveException(name);
         }
         return ResponseEntity.ok("Success: saved");
     }

@@ -4,7 +4,7 @@ package ch.project.quizme.controller;
 import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.databases.Word;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
-import ch.project.quizme.exceptions.WordFailedSaveException;
+import ch.project.quizme.exceptions.WordFailedToSaveException;
 import ch.project.quizme.exceptions.WordNotFoundException;
 import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.WordRepository;
@@ -83,7 +83,7 @@ public class WordController {
             try {
                 wordRepository.save(newWord);
             } catch (Exception e){
-                throw new WordFailedSaveException();
+                throw new WordFailedToSaveException();
             }
         }
         return ResponseEntity.ok("Success: saved");
