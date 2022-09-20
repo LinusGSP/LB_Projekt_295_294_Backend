@@ -65,6 +65,7 @@ public class LearnSetController {
                         ",language2_id=" + language2_id);
     }
 
+    // TODO ALSO DELETE WORDS IN LEARNSET
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteLearnSetById(@Valid @PathVariable("id") Integer id){
         try {

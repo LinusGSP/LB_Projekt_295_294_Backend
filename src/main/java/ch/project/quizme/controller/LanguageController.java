@@ -55,7 +55,5 @@ public class LanguageController {
             throw new LanguageNotFoundException(id);
         }
         return ResponseEntity.ok("Success");
-
     }
-
 }
