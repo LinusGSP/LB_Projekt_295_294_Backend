@@ -8,12 +8,15 @@ import ch.project.quizme.exceptions.WordFailedSaveException;
 import ch.project.quizme.exceptions.WordNotFoundException;
 import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.WordRepository;
+import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/api/word")
@@ -32,7 +35,7 @@ public class WordController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Word> getWord(@Valid @PathVariable("word_id") Integer word_id){
+    public ResponseEntity<Word> getWord(@Valid @PathVariable("id") Integer word_id){
         Optional<Word> word = wordRepository.findById(word_id);
         return ResponseEntity.ok(word.orElseThrow(() -> new WordNotFoundException(word_id)));
     }
@@ -59,17 +62,33 @@ public class WordController {
         word.setWord2(word2);
         word.setMarked(false);
 
-        Word createdWord = wordRepository.save(word);
+        wordRepository.save(word);
 
-        return ResponseEntity.ok("Success: id="+ createdWord.getId() + ", learnSet=" + id + ", word1=" + word1 + ", word2=" + word2);
+        return ResponseEntity.ok("Success: saved");
     }
 
-    @PostMapping(path = "/set")
+    @PostMapping(path = "")
     public ResponseEntity<String> createNewWords(@RequestBody Iterable<Word> words){
-        try {
-            wordRepository.saveAll(words);
-        } catch (IllegalArgumentException e){
-            throw new WordFailedSaveException();
+
+        for (Word word: words){
+            Integer learnSetId = word.getLearnSetId();
+            LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new WordNotFoundException(learnSetId));
+            String word1 = word.getWord1();
+            String word2 = word.getWord1();
+            Boolean marked = word.getMarked();
+
+            Word newWord = new Word();
+            newWord.setLearnSetId(learnSetId);
+            newWord.setLearnSet(learnSet);
+            newWord.setWord1(word1);
+            newWord.setWord2(word2);
+            newWord.setMarked(marked);
+
+            try {
+                wordRepository.save(newWord);
+            } catch (Exception e){
+                throw new WordFailedSaveException();
+            }
         }
         return ResponseEntity.ok("Success: saved");
     }
