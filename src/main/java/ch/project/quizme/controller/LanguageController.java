@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -26,15 +25,14 @@ public class LanguageController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Language> getAllLanguageById(@Valid @PathVariable Integer id){
+    public ResponseEntity<Language> getAllLanguageById(@PathVariable Integer id){
         Optional<Language> languages = languageRepository.findById(id);
         return ResponseEntity.ok(languages.orElseThrow(() -> new LanguageNotFoundException(id)));
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLanguage(@Valid @RequestParam String name,
-                                                 @Valid @RequestParam String flag){
-
+    public ResponseEntity<String> createLanguage(@RequestParam String name,
+                                                 @RequestParam String flag){
         Language language = new Language();
         language.setName(name);
         language.setFlag(flag);
@@ -44,16 +42,16 @@ public class LanguageController {
         }catch (Exception e){
             throw new LanguageFailedSaveException(name);
         }
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok("Success: saved");
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> deleteLanguage(@Valid @PathVariable Integer id){
+    public ResponseEntity<String> deleteLanguage(@PathVariable Integer id){
         try {
             languageRepository.deleteById(id);
         } catch (IllegalArgumentException e){
             throw new LanguageNotFoundException(id);
         }
-        return ResponseEntity.ok("Success");
+        return ResponseEntity.ok("Success: deleted");
     }
 }

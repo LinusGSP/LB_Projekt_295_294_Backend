@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -17,9 +15,7 @@ public class LearnSet {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotEmpty(message = "learn_set name can't be empty")
-    @Size(min = 1, max = 64, message = "learn_set name must be between 1 and 64 characters")
-    @Column(name = "name", nullable = false, length = 64)
+    @Column(name = "name", nullable = false, length = 32)
     private String name;
 
     @NotNull(message = "first language can't be empty")

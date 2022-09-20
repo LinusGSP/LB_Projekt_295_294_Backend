@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -30,26 +29,26 @@ public class LearnSetController {
         return learnSets.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
     @GetMapping(path = "/{id}")
-    public ResponseEntity<LearnSet> getLearnSetById(@Valid @PathVariable("id") Integer id){
+    public ResponseEntity<LearnSet> getLearnSetById(@PathVariable("id") Integer id){
         Optional<LearnSet> learnSet = learnSetRepository.findById(id);
         return ResponseEntity.ok(learnSet.orElseThrow(() -> new LearnSetNotFoundException(id)));
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLearnSet(@Valid @RequestParam String name,
-                                                 @Valid @RequestParam Integer language1_id,
-                                                 @Valid @RequestParam Integer language2_id) {
+    public ResponseEntity<String> createLearnSet(@RequestParam String name,
+                                                 @RequestParam Integer language1_id,
+                                                 @RequestParam Integer language2_id) {
 
 
         if (language1_id.equals(language2_id)){ throw new LanguageIdenticalException(language1_id, language2_id);}
 
-        Optional<Language> language1 = languageRepository.findById(language1_id);
-        Optional<Language> language2 = languageRepository.findById(language2_id);
+        Language language1 = languageRepository.findById(language1_id).orElseThrow(() -> new LanguageNotFoundException((language1_id)));
+        Language language2 = languageRepository.findById(language2_id).orElseThrow(() -> new LanguageNotFoundException((language2_id)));
 
         LearnSet learnSet = new LearnSet();
         learnSet.setName(name);
-        learnSet.setLanguage1(language1.orElseThrow(() -> new LanguageNotFoundException((language1_id))));
-        learnSet.setLanguage2(language2.orElseThrow(() -> new LanguageNotFoundException((language2_id))));
+        learnSet.setLanguage1(language1);
+        learnSet.setLanguage2(language2);
         learnSet.setCreationDate();
         learnSet.setLastEdited();
 
@@ -59,20 +58,17 @@ public class LearnSetController {
             throw new LearnSetFailedSaveException(name);
         }
         return ResponseEntity.ok(
-                "Success: Created new LearnSet with: " +
-                        "name="+name+
-                        ",language1_id=" + language1_id +
-                        ",language2_id=" + language2_id);
+                "Success: saved");
     }
 
     // TODO ALSO DELETE WORDS IN LEARNSET
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> deleteLearnSetById(@Valid @PathVariable("id") Integer id){
+    public ResponseEntity<String> deleteLearnSetById(@PathVariable("id") Integer id){
         try {
             learnSetRepository.deleteById(id);
         } catch (Exception e){
             throw new LearnSetNotFoundException(id);
         }
-        return ResponseEntity.ok("Success: Deleted LearnSet with id="+ id);
+        return ResponseEntity.ok("Success: deleted");
     }
 }

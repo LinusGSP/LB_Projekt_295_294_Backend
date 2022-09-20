@@ -8,15 +8,11 @@ import ch.project.quizme.exceptions.WordFailedSaveException;
 import ch.project.quizme.exceptions.WordNotFoundException;
 import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.WordRepository;
-import ch.qos.logback.core.net.SyslogOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping(path = "/api/word")
@@ -35,21 +31,21 @@ public class WordController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Word> getWord(@Valid @PathVariable("id") Integer word_id){
+    public ResponseEntity<Word> getWord(@PathVariable("id") Integer word_id){
         Optional<Word> word = wordRepository.findById(word_id);
         return ResponseEntity.ok(word.orElseThrow(() -> new WordNotFoundException(word_id)));
     }
 
     @GetMapping(path = "/set/{id}")
-    public ResponseEntity<Iterable<Word>> getLearnSetWords(@Valid @PathVariable("id") Integer id){
+    public ResponseEntity<Iterable<Word>> getLearnSetWords(@PathVariable("id") Integer id){
         Optional<Iterable<Word>> words = Optional.of(wordRepository.findByLearnSetId(id));
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping(path = "/{id}")
-    public ResponseEntity<String> createNewWord(@Valid @PathVariable("id") Integer id,
-                                                @Valid @RequestParam String word1,
-                                                @Valid @RequestParam String word2){
+    public ResponseEntity<String> createNewWord(@PathVariable("id") Integer id,
+                                                @RequestParam String word1,
+                                                @RequestParam String word2){
 
         Optional<LearnSet> learnSet = learnSetRepository.findById(id);
 
@@ -93,12 +89,12 @@ public class WordController {
         return ResponseEntity.ok("Success: saved");
     }
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> deleteWord(@Valid @PathVariable("id") Integer id){
+    public ResponseEntity<String> deleteWord(@PathVariable("id") Integer id){
         try {
             wordRepository.deleteById(id);
         } catch (Exception e){
             throw new WordNotFoundException(id);
         }
-        return ResponseEntity.ok("Success: Deleted word with id=" + id);
+        return ResponseEntity.ok("Success: deleted");
     }
 }

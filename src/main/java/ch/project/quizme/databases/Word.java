@@ -1,13 +1,8 @@
 package ch.project.quizme.databases;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "word")
@@ -17,19 +12,14 @@ public class Word {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotEmpty(message = "Word1 cant be empty")
-    @Size(min = 1, max = 256, message = "Word1 must be between 1 and 255 characters long")
-    @Column(name = "word1", nullable = false, length = 256)
+    @Column(name = "word1", nullable = false, length = 64)
     private String word1;
 
-    @NotEmpty(message = "Word2 cant be empty")
-    @Size(min = 1, max = 256, message = "Word2 must be between 1 and 255 characters long")
-    @Column(name = "word2", nullable = false, length = 256)
+    @Column(name = "word2", nullable = false, length = 64)
     private String word2;
 
     @JsonIgnore
-    @NotNull(message = "learnSet cant be null")
-    @ManyToOne(targetEntity = LearnSet.class, fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = LearnSet.class)
     @JoinColumn(name = "learnSet_id")
     private LearnSet learnSet;
 
