@@ -46,13 +46,13 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(WordFailedToSaveException.class)
-    public ResponseEntity<Object> handleWordFailedToSaveException(WordFailedToSaveException ex) {
+    @ExceptionHandler(LearnWordFailedToSaveException.class)
+    public ResponseEntity<Object> handleWordFailedToSaveException(LearnWordFailedToSaveException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(WordNotFoundException.class)
-    public ResponseEntity<Object> handleWordNotFoundException(WordNotFoundException ex) {
+    @ExceptionHandler(LearnWordNotFoundException.class)
+    public ResponseEntity<Object> handleWordNotFoundException(LearnWordNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

@@ -4,8 +4,8 @@ package ch.project.quizme.controller;
 import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.databases.LearnWord;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
-import ch.project.quizme.exceptions.WordFailedToSaveException;
-import ch.project.quizme.exceptions.WordNotFoundException;
+import ch.project.quizme.exceptions.LearnWordFailedToSaveException;
+import ch.project.quizme.exceptions.LearnWordNotFoundException;
 import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.LearnWordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class LearnWordController {
     @GetMapping(path = "/{id}")
     public ResponseEntity<LearnWord> getWord(@PathVariable("id") Integer id){
         Optional<LearnWord> word = learnWordRepository.findById(id);
-        return ResponseEntity.ok(word.orElseThrow(() -> new WordNotFoundException(id)));
+        return ResponseEntity.ok(word.orElseThrow(() -> new LearnWordNotFoundException(id)));
     }
 
     @GetMapping(path = "/set/{id}")
@@ -48,7 +48,7 @@ public class LearnWordController {
         try {
             learnWordRepository.save(learnWord);
         } catch (Exception e){
-            throw new WordFailedToSaveException();
+            throw new LearnWordFailedToSaveException();
         }
         return ResponseEntity.ok("Success: saved");
     }
@@ -60,7 +60,7 @@ public class LearnWordController {
             learnWordRepository.saveAll(LearnWords);
         } catch (Exception e){
             System.out.println(e.getMessage());
-            throw new WordFailedToSaveException();
+            throw new LearnWordFailedToSaveException();
         }
         return ResponseEntity.ok("Success: saved");
     }
@@ -69,7 +69,7 @@ public class LearnWordController {
         try {
             learnWordRepository.deleteById(id);
         } catch (Exception e){
-            throw new WordNotFoundException(id);
+            throw new LearnWordNotFoundException(id);
         }
         return ResponseEntity.ok("Success: deleted");
     }

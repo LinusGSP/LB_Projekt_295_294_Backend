@@ -1,7 +1,5 @@
 package ch.project.quizme;
 
-import ch.project.quizme.controller.LanguageController;
-import ch.project.quizme.controller.LearnSetController;
 import ch.project.quizme.controller.LearnWordController;
 import ch.project.quizme.repository.LanguageRepository;
 import ch.project.quizme.repository.LearnSetRepository;
