@@ -2,6 +2,8 @@ package ch.project.quizme.controller;
 
 
 import ch.project.quizme.databases.Language;
+import ch.project.quizme.exceptions.InvalidLanguageFlagException;
+import ch.project.quizme.exceptions.InvalidLanguageNameException;
 import ch.project.quizme.exceptions.LanguageFailedToSaveException;
 import ch.project.quizme.exceptions.LanguageNotFoundException;
 import ch.project.quizme.repository.LanguageRepository;
@@ -32,6 +34,10 @@ public class LanguageController {
 
     @PostMapping(path = "")
     public ResponseEntity<String> createLanguage(@RequestParam String name, @RequestParam String flag){
+
+        if (name.isEmpty()) {throw new InvalidLanguageNameException();}
+        if (flag.isEmpty() | flag.length() != 2) {throw new InvalidLanguageFlagException();}
+
         Language language = new Language();
         language.setName(name);
         language.setFlag(flag);

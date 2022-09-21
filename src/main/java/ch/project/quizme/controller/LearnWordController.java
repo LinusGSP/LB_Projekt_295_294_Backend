@@ -7,7 +7,7 @@ import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.exceptions.WordFailedToSaveException;
 import ch.project.quizme.exceptions.WordNotFoundException;
 import ch.project.quizme.repository.LearnSetRepository;
-import ch.project.quizme.repository.WordRepository;
+import ch.project.quizme.repository.LearnWordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,26 +19,26 @@ import java.util.*;
 public class LearnWordController {
 
     @Autowired
-    WordRepository wordRepository;
+    LearnWordRepository learnWordRepository;
 
     @Autowired
     LearnSetRepository learnSetRepository;
 
     @GetMapping(path = "")
     public ResponseEntity<Iterable<LearnWord>> getAllWords(){
-        Optional<Iterable<LearnWord>> words = Optional.of(wordRepository.findAll());
+        Optional<Iterable<LearnWord>> words = Optional.of(learnWordRepository.findAll());
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<LearnWord> getWord(@PathVariable("id") Integer id){
-        Optional<LearnWord> word = wordRepository.findById(id);
+        Optional<LearnWord> word = learnWordRepository.findById(id);
         return ResponseEntity.ok(word.orElseThrow(() -> new WordNotFoundException(id)));
     }
 
     @GetMapping(path = "/set/{id}")
     public ResponseEntity<Iterable<LearnWord>> getLearnSetWords(@PathVariable("id") Integer id){
-        Optional<Iterable<LearnWord>> words = Optional.of(wordRepository.findByLearnSetId(id));
+        Optional<Iterable<LearnWord>> words = Optional.of(learnWordRepository.findByLearnSetId(id));
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
@@ -46,7 +46,7 @@ public class LearnWordController {
     public ResponseEntity<String> createNewWord(@PathVariable("id") Integer id, @RequestParam String translation, @RequestParam String word){
         LearnWord learnWord = LearnWordFactory(id, translation, word);
         try {
-            wordRepository.save(learnWord);
+            learnWordRepository.save(learnWord);
         } catch (Exception e){
             throw new WordFailedToSaveException();
         }
@@ -57,7 +57,7 @@ public class LearnWordController {
     public ResponseEntity<String> createNewWords(@RequestBody Iterable<LearnWord> words){
         Iterable<LearnWord> LearnWords = LearnWordsFactory(words);
         try {
-            wordRepository.saveAll(LearnWords);
+            learnWordRepository.saveAll(LearnWords);
         } catch (Exception e){
             System.out.println(e.getMessage());
             throw new WordFailedToSaveException();
@@ -67,7 +67,7 @@ public class LearnWordController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteWord(@PathVariable("id") Integer id){
         try {
-            wordRepository.deleteById(id);
+            learnWordRepository.deleteById(id);
         } catch (Exception e){
             throw new WordNotFoundException(id);
         }

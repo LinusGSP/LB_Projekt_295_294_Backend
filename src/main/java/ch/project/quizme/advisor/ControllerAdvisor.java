@@ -26,6 +26,16 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InvalidLanguageFlagException.class)
+    public ResponseEntity<Object> handleInvalidLanguageFlagException(InvalidLanguageFlagException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidLanguageNameException.class)
+    public ResponseEntity<Object> handleInvalidLanguageNameException(InvalidLanguageNameException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(LearnSetFailedToSaveException.class)
     public ResponseEntity<Object> handleLearnSetFailedToSaveException(LearnSetFailedToSaveException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
