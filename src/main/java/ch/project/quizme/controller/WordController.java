@@ -2,7 +2,7 @@ package ch.project.quizme.controller;
 
 
 import ch.project.quizme.databases.LearnSet;
-import ch.project.quizme.databases.Word;
+import ch.project.quizme.databases.LearnWord;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.exceptions.WordFailedToSaveException;
 import ch.project.quizme.exceptions.WordNotFoundException;
@@ -25,63 +25,61 @@ public class WordController {
     LearnSetRepository learnSetRepository;
 
     @GetMapping(path = "")
-    public ResponseEntity<Iterable<Word>> getAllWords(){
-        Optional<Iterable<Word>> words = Optional.of(wordRepository.findAll());
+    public ResponseEntity<Iterable<LearnWord>> getAllWords(){
+        Optional<Iterable<LearnWord>> words = Optional.of(wordRepository.findAll());
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Word> getWord(@PathVariable("id") Integer word_id){
-        Optional<Word> word = wordRepository.findById(word_id);
-        return ResponseEntity.ok(word.orElseThrow(() -> new WordNotFoundException(word_id)));
+    public ResponseEntity<LearnWord> getWord(@PathVariable("id") Integer id){
+        Optional<LearnWord> word = wordRepository.findById(id);
+        return ResponseEntity.ok(word.orElseThrow(() -> new WordNotFoundException(id)));
     }
 
     @GetMapping(path = "/set/{id}")
-    public ResponseEntity<Iterable<Word>> getLearnSetWords(@PathVariable("id") Integer id){
-        Optional<Iterable<Word>> words = Optional.of(wordRepository.findByLearnSetId(id));
+    public ResponseEntity<Iterable<LearnWord>> getLearnSetWords(@PathVariable("id") Integer id){
+        Optional<Iterable<LearnWord>> words = Optional.of(wordRepository.findByLearnSetId(id));
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping(path = "/{id}")
     public ResponseEntity<String> createNewWord(@PathVariable("id") Integer id,
-                                                @RequestParam String word1,
-                                                @RequestParam String word2){
+                                                @RequestParam String translation,
+                                                @RequestParam String word){
 
-        Optional<LearnSet> learnSet = learnSetRepository.findById(id);
+        LearnSet learnSet = learnSetRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id));
 
-        if (learnSet.isEmpty()) {throw new LearnSetNotFoundException(id); }
+        LearnWord learnWord = new LearnWord();
+        learnWord.setLearnSet(learnSet);
+        learnWord.setLearnSetId(id);
+        learnWord.setTranslation(translation);
+        learnWord.setWord(word);
+        learnWord.setMarked(false);
 
-        Word word = new Word();
-        word.setLearnSet(learnSetRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id)));
-        word.setLearnSetId(id);
-        word.setWord1(word1);
-        word.setWord2(word2);
-        word.setMarked(false);
-
-        wordRepository.save(word);
+        wordRepository.save(learnWord);
 
         return ResponseEntity.ok("Success: saved");
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createNewWords(@RequestBody Iterable<Word> words){
+    public ResponseEntity<String> createNewWords(@RequestBody Iterable<LearnWord> words){
 
-        for (Word word: words){
-            Integer learnSetId = word.getLearnSetId();
+        for (LearnWord learnWord : words){
+            Integer learnSetId = learnWord.getLearnSetId();
             LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new WordNotFoundException(learnSetId));
-            String word1 = word.getWord1();
-            String word2 = word.getWord1();
-            Boolean marked = word.getMarked();
+            String translation = learnWord.getTranslation();
+            String word = learnWord.getTranslation();
+            Boolean marked = learnWord.getMarked();
 
-            Word newWord = new Word();
-            newWord.setLearnSetId(learnSetId);
-            newWord.setLearnSet(learnSet);
-            newWord.setWord1(word1);
-            newWord.setWord2(word2);
-            newWord.setMarked(marked);
+            LearnWord newLearnWord = new LearnWord();
+            newLearnWord.setLearnSetId(learnSetId);
+            newLearnWord.setLearnSet(learnSet);
+            newLearnWord.setTranslation(translation);
+            newLearnWord.setWord(word);
+            newLearnWord.setMarked(marked);
 
             try {
-                wordRepository.save(newWord);
+                wordRepository.save(newLearnWord);
             } catch (Exception e){
                 throw new WordFailedToSaveException();
             }

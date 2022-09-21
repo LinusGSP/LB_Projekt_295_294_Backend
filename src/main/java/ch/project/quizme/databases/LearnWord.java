@@ -5,18 +5,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "word")
-public class Word {
+@Table(name = "learn_word")
+public class LearnWord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "word1", nullable = false, length = 64)
-    private String word1;
+    @Column(name = "translation", nullable = false, length = 64)
+    private String translation;
 
-    @Column(name = "word2", nullable = false, length = 64)
-    private String word2;
+    @Column(name = "word", nullable = false, length = 64)
+    private String word;
 
     @JsonIgnore
     @ManyToOne(targetEntity = LearnSet.class)
@@ -37,20 +37,20 @@ public class Word {
         this.id = id;
     }
 
-    public String getWord1() {
-        return word1;
+    public String getTranslation() {
+        return translation;
     }
 
-    public void setWord1(String word1) {
-        this.word1 = word1;
+    public void setTranslation(String translation) {
+        this.translation = translation;
     }
 
-    public String getWord2() {
-        return word2;
+    public String getWord() {
+        return word;
     }
 
-    public void setWord2(String word2) {
-        this.word2 = word2;
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public LearnSet getLearnSet() {

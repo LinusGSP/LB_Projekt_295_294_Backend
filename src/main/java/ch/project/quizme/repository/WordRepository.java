@@ -1,9 +1,8 @@
 package ch.project.quizme.repository;
 
-import ch.project.quizme.databases.LearnSet;
-import ch.project.quizme.databases.Word;
+import ch.project.quizme.databases.LearnWord;
 import org.springframework.data.repository.CrudRepository;
 
-public interface WordRepository extends CrudRepository<Word, Integer> {
-    Iterable<Word> findByLearnSetId(Integer learnSetId);
+public interface WordRepository extends CrudRepository<LearnWord, Integer> {
+    Iterable<LearnWord> findByLearnSetId(Integer learnSetId);
 }
