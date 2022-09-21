@@ -35,10 +35,7 @@ public class LearnSetController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLearnSet(@RequestParam String name,
-                                                 @RequestParam Integer language1_id,
-                                                 @RequestParam Integer language2_id) {
-
+    public ResponseEntity<String> createLearnSet(@RequestParam String name, @RequestParam Integer language1_id, @RequestParam Integer language2_id) {
 
         if (language1_id.equals(language2_id)){ throw new LanguageIdenticalException(language1_id, language2_id);}
 

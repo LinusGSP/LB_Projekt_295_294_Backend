@@ -10,7 +10,7 @@ public class Language {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 32)
+    @Column(name = "name", nullable = false, length = 64)
     private String name;
 
     @Column(name = "flag", nullable = false, length = 2)

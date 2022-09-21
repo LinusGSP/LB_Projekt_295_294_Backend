@@ -31,8 +31,7 @@ public class LanguageController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLanguage(@RequestParam String name,
-                                                 @RequestParam String flag){
+    public ResponseEntity<String> createLanguage(@RequestParam String name, @RequestParam String flag){
         Language language = new Language();
         language.setName(name);
         language.setFlag(flag);

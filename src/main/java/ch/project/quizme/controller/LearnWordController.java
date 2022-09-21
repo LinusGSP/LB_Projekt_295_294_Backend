@@ -12,11 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping(path = "/api/word")
-public class WordController {
+public class LearnWordController {
 
     @Autowired
     WordRepository wordRepository;
@@ -43,46 +43,24 @@ public class WordController {
     }
 
     @PostMapping(path = "/{id}")
-    public ResponseEntity<String> createNewWord(@PathVariable("id") Integer id,
-                                                @RequestParam String translation,
-                                                @RequestParam String word){
-
-        LearnSet learnSet = learnSetRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id));
-
-        LearnWord learnWord = new LearnWord();
-        learnWord.setLearnSet(learnSet);
-        learnWord.setLearnSetId(id);
-        learnWord.setTranslation(translation);
-        learnWord.setWord(word);
-        learnWord.setMarked(false);
-
-        wordRepository.save(learnWord);
-
+    public ResponseEntity<String> createNewWord(@PathVariable("id") Integer id, @RequestParam String translation, @RequestParam String word){
+        LearnWord learnWord = LearnWordFactory(id, translation, word);
+        try {
+            wordRepository.save(learnWord);
+        } catch (Exception e){
+            throw new WordFailedToSaveException();
+        }
         return ResponseEntity.ok("Success: saved");
     }
 
     @PostMapping(path = "")
     public ResponseEntity<String> createNewWords(@RequestBody Iterable<LearnWord> words){
-
-        for (LearnWord learnWord : words){
-            Integer learnSetId = learnWord.getLearnSetId();
-            LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new WordNotFoundException(learnSetId));
-            String translation = learnWord.getTranslation();
-            String word = learnWord.getTranslation();
-            Boolean marked = learnWord.getMarked();
-
-            LearnWord newLearnWord = new LearnWord();
-            newLearnWord.setLearnSetId(learnSetId);
-            newLearnWord.setLearnSet(learnSet);
-            newLearnWord.setTranslation(translation);
-            newLearnWord.setWord(word);
-            newLearnWord.setMarked(marked);
-
-            try {
-                wordRepository.save(newLearnWord);
-            } catch (Exception e){
-                throw new WordFailedToSaveException();
-            }
+        Iterable<LearnWord> LearnWords = LearnWordsFactory(words);
+        try {
+            wordRepository.saveAll(LearnWords);
+        } catch (Exception e){
+            System.out.println(e.getMessage());
+            throw new WordFailedToSaveException();
         }
         return ResponseEntity.ok("Success: saved");
     }
@@ -94,5 +72,33 @@ public class WordController {
             throw new WordNotFoundException(id);
         }
         return ResponseEntity.ok("Success: deleted");
+    }
+
+
+    private Iterable<LearnWord> LearnWordsFactory(Iterable<LearnWord> words){
+         Set<LearnWord> newLearnWords = new HashSet<>();
+
+        for (LearnWord learnWord : words) {
+            LearnWord newLearnWord =  LearnWordFactory(
+                    learnWord.getLearnSetId(),
+                    learnWord.getTranslation(),
+                    learnWord.getWord()
+            );
+            newLearnWords.add(newLearnWord);
+        }
+        return newLearnWords;
+    }
+
+    private LearnWord LearnWordFactory(Integer learnSetId, String translation, String word){
+        LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
+
+        LearnWord newLearnWord = new LearnWord();
+        newLearnWord.setLearnSetId(learnSetId);
+        newLearnWord.setLearnSet(learnSet);
+        newLearnWord.setTranslation(translation);
+        newLearnWord.setWord(word);
+        newLearnWord.setMarked(false);
+
+        return newLearnWord;
     }
 }
