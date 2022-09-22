@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -35,27 +36,9 @@ public class LearnSetController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLearnSet(@RequestParam String name, @RequestParam Integer language1_id, @RequestParam Integer language2_id) {
-
-        if (language1_id.equals(language2_id)){ throw new LanguageIdenticalException(language1_id, language2_id);}
-
-        Language language1 = languageRepository.findById(language1_id).orElseThrow(() -> new LanguageNotFoundException((language1_id)));
-        Language language2 = languageRepository.findById(language2_id).orElseThrow(() -> new LanguageNotFoundException((language2_id)));
-
-        LearnSet learnSet = new LearnSet();
-        learnSet.setName(name);
-        learnSet.setLanguage1(language1);
-        learnSet.setLanguage2(language2);
-        learnSet.setCreationDate();
-        learnSet.setLastEdited();
-
-        try {
-            learnSetRepository.save(learnSet);
-        } catch (Exception e){
-            throw new LearnSetFailedToSaveException(name);
-        }
-        return ResponseEntity.ok(
-                "Success: saved");
+    public @ResponseBody ResponseEntity<String> createLearnSet(@RequestBody LearnSet learnSet){
+        learnSetRepository.save(learnSet);
+        return ResponseEntity.ok("Success: saved");
     }
 
     // TODO ALSO DELETE WORDS IN LEARNSET
