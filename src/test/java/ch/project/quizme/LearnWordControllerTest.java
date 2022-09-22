@@ -72,17 +72,6 @@ public class LearnWordControllerTest {
     }
 
     /**
-     * Method under test: {@link LearnWordController#createNewWord(Integer, String, String)}
-     */
-    @Test
-    public void CheckCreateNewWordWithCorrectInput_isOk() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/word/{id}", 1)
-                        .param("translation", "foo")
-                        .param("word", "bar"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
-
-    /**
      * Method under test: {@link LearnWordController#getWord(Integer)}
      */
     @Test

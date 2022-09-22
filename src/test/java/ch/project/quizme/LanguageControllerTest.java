@@ -16,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.setAllowComparingPrivateFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @ExtendWith(SpringExtension.class)
@@ -58,55 +57,8 @@ class LanguageControllerTest {
     }
 
     /**
-     * Method under test: {@link LanguageController#createLanguage(String, String)}
+     * Method under test: {@link LanguageController#deleteLanguage(Integer)}
      */
-    @Test
-    public void CheckCreateLanguageWithCorrectInput_isOk() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/language/")
-                        .param("flag", "fo")
-                        .param("name", "foo"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
-
-    /**
-     * Method under test: {@link LanguageController#createLanguage(String, String)}
-     */
-    @Test
-    public void CheckCreateLanguageWithBadFlag_isBadRequest() throws Exception{
-        // Flag to long (must be of size 2)
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/language/")
-                        .param("flag", "foo")
-                        .param("name", "foo"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-
-        // Flag cant be empty
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/language/")
-                        .param("flag", "")
-                        .param("name", "foo"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-
-        // Flag cant be null
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/language/")
-                        .param("name", "foo"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
-    /**
-     * Method under test: {@link LanguageController#createLanguage(String, String)}
-     */
-    @Test
-    public void CheckCreateLanguageWithBadName_isBadRequest() throws Exception{
-        // Name cant be empty
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/language/")
-                        .param("flag", "fo")
-                        .param("name", ""))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-        // Name cant be null
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/language/")
-                        .param("flag", "fo"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
-
     @Test
     public void CheckDeleteLanguageById_isOk() throws Exception{
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/learnset/{id}", 1))

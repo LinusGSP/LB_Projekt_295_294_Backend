@@ -1,18 +1,15 @@
 package ch.project.quizme.controller;
 
 
-import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.databases.LearnWord;
-import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.exceptions.LearnWordFailedToSaveException;
 import ch.project.quizme.exceptions.LearnWordNotFoundException;
-import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.LearnWordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/api/word")

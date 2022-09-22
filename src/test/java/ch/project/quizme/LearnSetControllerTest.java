@@ -2,7 +2,6 @@ package ch.project.quizme;
 
 import ch.project.quizme.controller.LanguageController;
 import ch.project.quizme.controller.LearnSetController;
-import ch.project.quizme.databases.LearnWord;
 import ch.project.quizme.repository.LanguageRepository;
 import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.LearnWordRepository;
@@ -62,35 +61,6 @@ public class LearnSetControllerTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    /**
-     * Method under test: {@link LearnSetController#createLearnSet(String, Integer, Integer)}
-     */
-    @Test
-    public void CheckCreateLearnSetWithCorrectInput_isOk() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/learnset")
-                        .param("name", "foo")
-                        .param("language1_id" , "1")
-                        .param("language2_id", "2"))
-                .andExpect(MockMvcResultMatchers.status().isOk());
-    }
 
-    /**
-     * Method under test: {@link LearnSetController#createLearnSet(String, Integer, Integer)}
-     */
-    @Test
-    public void CheckCreateLearnSetWithBadInput_isOk() throws Exception{
-        // same language twice is not allowed
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/learnset")
-                        .param("name", "foo")
-                        .param("language1_id" , "1")
-                        .param("language2_id", "1"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/learnset")
-                        .param("name", "foo")
-                        .param("language1_id" , "1")
-                        .param("language2_id", "1"))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest());
-    }
 }
 
