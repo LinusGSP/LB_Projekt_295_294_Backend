@@ -19,7 +19,7 @@ public class LearnWord {
     @JoinColumn(name = "learn_set_id")
     private Integer learnSetId;
 
-    @Column(name = "marked")
+    @Column(columnDefinition = "BOOLEAN default false")
     private Boolean marked = false;
 
     public Integer getId() {

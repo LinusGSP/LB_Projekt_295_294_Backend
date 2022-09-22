@@ -23,10 +23,10 @@ public class LearnSet {
     private Language language2;
 
     @Column(name = "creation_date")
-    private Date creationDate;
+    private Date creationDate = new Date();
 
     @Column(name = "last_edited")
-    private Date lastEdited;
+    private Date lastEdited = new Date();
 
     public Integer getId() {
         return id;

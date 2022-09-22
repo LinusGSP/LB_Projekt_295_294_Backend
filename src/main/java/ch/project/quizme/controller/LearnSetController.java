@@ -41,7 +41,6 @@ public class LearnSetController {
         return ResponseEntity.ok("Success: saved");
     }
 
-    // TODO ALSO DELETE WORDS IN LEARNSET
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteLearnSetById(@PathVariable("id") Integer id){
         try {
