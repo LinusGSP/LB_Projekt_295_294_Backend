@@ -21,9 +21,6 @@ public class LearnWordController {
     @Autowired
     LearnWordRepository learnWordRepository;
 
-    @Autowired
-    LearnSetRepository learnSetRepository;
-
     @GetMapping(path = "")
     public ResponseEntity<Iterable<LearnWord>> getAllWords(){
         Optional<Iterable<LearnWord>> words = Optional.of(learnWordRepository.findAll());
@@ -42,28 +39,16 @@ public class LearnWordController {
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PostMapping(path = "/{id}")
-    public ResponseEntity<String> createNewWord(@PathVariable("id") Integer id, @RequestParam String translation, @RequestParam String word){
-        LearnWord learnWord = LearnWordFactory(id, translation, word);
+    @PostMapping(path = "")
+    public ResponseEntity<String> createNewWords(@RequestBody Iterable<LearnWord> learnWord){
         try {
-            learnWordRepository.save(learnWord);
+            learnWordRepository.saveAll(learnWord);
         } catch (Exception e){
             throw new LearnWordFailedToSaveException();
         }
         return ResponseEntity.ok("Success: saved");
     }
 
-    @PostMapping(path = "")
-    public ResponseEntity<String> createNewWords(@RequestBody Iterable<LearnWord> words){
-        Iterable<LearnWord> LearnWords = LearnWordsFactory(words);
-        try {
-            learnWordRepository.saveAll(LearnWords);
-        } catch (Exception e){
-            System.out.println(e.getMessage());
-            throw new LearnWordFailedToSaveException();
-        }
-        return ResponseEntity.ok("Success: saved");
-    }
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteWord(@PathVariable("id") Integer id){
         try {
@@ -72,33 +57,5 @@ public class LearnWordController {
             throw new LearnWordNotFoundException(id);
         }
         return ResponseEntity.ok("Success: deleted");
-    }
-
-
-    private Iterable<LearnWord> LearnWordsFactory(Iterable<LearnWord> words){
-         Set<LearnWord> newLearnWords = new HashSet<>();
-
-        for (LearnWord learnWord : words) {
-            LearnWord newLearnWord =  LearnWordFactory(
-                    learnWord.getLearnSetId(),
-                    learnWord.getTranslation(),
-                    learnWord.getWord()
-            );
-            newLearnWords.add(newLearnWord);
-        }
-        return newLearnWords;
-    }
-
-    private LearnWord LearnWordFactory(Integer learnSetId, String translation, String word){
-        LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
-
-        LearnWord newLearnWord = new LearnWord();
-        newLearnWord.setLearnSetId(learnSetId);
-        newLearnWord.setLearnSet(learnSet);
-        newLearnWord.setTranslation(translation);
-        newLearnWord.setWord(word);
-        newLearnWord.setMarked(false);
-
-        return newLearnWord;
     }
 }

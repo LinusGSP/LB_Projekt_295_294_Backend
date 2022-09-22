@@ -1,6 +1,7 @@
 package ch.project.quizme.databases;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
@@ -18,12 +19,7 @@ public class LearnWord {
     @Column(name = "word", nullable = false, length = 64)
     private String word;
 
-    @JsonIgnore
-    @ManyToOne(targetEntity = LearnSet.class)
-    @JoinColumn(name = "learnSet_id")
-    private LearnSet learnSet;
-
-    @Column(name = "learnSet_id", insertable = false, updatable = false, nullable = false)
+    @JoinColumn(name = "learn_set_id")
     private Integer learnSetId;
 
     @Column(name = "marked")
@@ -53,13 +49,6 @@ public class LearnWord {
         this.word = word;
     }
 
-    public LearnSet getLearnSet() {
-        return learnSet;
-    }
-
-    public void setLearnSet(LearnSet learnSet) {
-        this.learnSet = learnSet;
-    }
 
     public Integer getLearnSetId() {
         return learnSetId;
