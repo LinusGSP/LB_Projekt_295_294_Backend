@@ -38,7 +38,6 @@ public class LearnWordController {
 
     @PostMapping(path = "")
     public ResponseEntity<LearnWord> createNewWord(@RequestBody LearnWord learnWord) {
-        System.out.println("Hallo");
         LearnWord word;
         try {
             word = learnWordRepository.save(learnWord);
