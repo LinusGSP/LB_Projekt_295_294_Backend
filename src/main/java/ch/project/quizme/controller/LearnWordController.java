@@ -37,9 +37,23 @@ public class LearnWordController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createNewWords(@RequestBody Iterable<LearnWord> learnWord){
+    public ResponseEntity<LearnWord> createNewWord(@RequestBody LearnWord learnWord) {
+        System.out.println("Hallo");
+        LearnWord word;
         try {
-            learnWordRepository.saveAll(learnWord);
+            word = learnWordRepository.save(learnWord);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new LearnWordFailedToSaveException();
+        }
+        System.out.println(word.getId());
+        return ResponseEntity.ok(word);
+    }
+
+    @PostMapping(path = "/set")
+    public ResponseEntity<String> createNewWords(@RequestBody Iterable<LearnWord> learnWords){
+        try {
+            learnWordRepository.saveAll(learnWords);
         } catch (Exception e){
             throw new LearnWordFailedToSaveException();
         }
