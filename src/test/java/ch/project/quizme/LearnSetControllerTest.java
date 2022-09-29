@@ -2,9 +2,11 @@ package ch.project.quizme;
 
 import ch.project.quizme.controller.LanguageController;
 import ch.project.quizme.controller.LearnSetController;
+import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.repository.LanguageRepository;
 import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.LearnWordRepository;
+import org.hibernate.query.criteria.internal.expression.SimpleCaseExpression;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +20,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @ExtendWith(SpringExtension.class)
@@ -30,6 +36,7 @@ public class LearnSetControllerTest {
     @MockBean private LanguageRepository languageRepository;
     @MockBean private LearnSetRepository learnSetRepository;
     @MockBean private LanguageController languageController;
+
     @Autowired private LearnSetController learnSetController;
     @Autowired private MockMvc mockMvc;
 
@@ -56,9 +63,11 @@ public class LearnSetControllerTest {
      */
     @Test
     public void CheckGetLearnSetById_isOk() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/api/learnset/{id}", 1))
+
+        when(learnSetRepository.findById(anyInt())).thenReturn(Optional.of(new LearnSet()));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/learnset/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON));
     }
 
 

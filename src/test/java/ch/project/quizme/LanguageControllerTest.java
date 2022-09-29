@@ -1,6 +1,10 @@
 package ch.project.quizme;
 
 import ch.project.quizme.controller.LanguageController;
+import ch.project.quizme.controller.LearnWordController;
+import ch.project.quizme.databases.Language;
+import ch.project.quizme.databases.LearnSet;
+import ch.project.quizme.databases.LearnWord;
 import ch.project.quizme.repository.LanguageRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +19,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @ExtendWith(SpringExtension.class)
@@ -50,6 +58,8 @@ class LanguageControllerTest {
      */
     @Test
     public void CheckGetOneLanguageById_isOk() throws Exception{
+        when(languageRepository.findById(anyInt())).thenReturn(Optional.of(new Language()));
+
         mockMvc.perform(MockMvcRequestBuilders.get("/api/language/{id}", "1"))
                 .andDo(res -> System.out.println(res.getResponse().getContentAsString()))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -61,7 +71,8 @@ class LanguageControllerTest {
      */
     @Test
     public void CheckDeleteLanguageById_isOk() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/learnset/{id}", 1))
+        when(languageRepository.findById(anyInt())).thenReturn(Optional.of(new Language()));
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/language/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }
