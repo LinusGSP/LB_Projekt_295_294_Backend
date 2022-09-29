@@ -1,7 +1,8 @@
 package ch.project.quizme.databases;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "language")
@@ -12,7 +13,7 @@ public class Language {
     private Integer id;
 
     @NotBlank(message = "Name cant be blank")
-    @Size(min=1, max = 64, message = "Name must be at least of length 1 and max of length 64")
+    @Size(min = 1, max = 64, message = "Name must be at least of length 1 and max of length 64")
     @Column(name = "Name", nullable = false, length = 64)
     private String name;
 
