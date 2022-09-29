@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -32,7 +33,7 @@ public class LearnSetController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLearnSet(@RequestBody LearnSet learnSet){
+    public ResponseEntity<String> createLearnSet(@Valid @RequestBody LearnSet learnSet){
         try {
             learnSetRepository.save(learnSet);
         } catch (Exception e){
