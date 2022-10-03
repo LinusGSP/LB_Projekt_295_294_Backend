@@ -5,6 +5,20 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
+/**This class is the learnSet entity class.
+ * It is used to store the learnSet information in the database.
+ * It has the following fields:
+ *     - id: the id of the learnSet
+ *     - name: the name of the learnSet
+ *     - language1: the language of the first column in the word table (translation)
+ *     - language2: the language of the second column in the word table (word)
+ *     - creationDate: the date of creation
+ *     - lastEdited: the date of the last time the learnset was eddited
+ *
+ * @author Linus Schönbächler
+ * @version 1.0
+ * @since 2022-10-03
+ */
 @Entity
 @Table(name = "learn_set")
 public class LearnSet {

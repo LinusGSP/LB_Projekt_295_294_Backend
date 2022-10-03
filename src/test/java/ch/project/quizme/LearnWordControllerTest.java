@@ -25,6 +25,12 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
+/**This class is for Junit testing the LearnWordController class
+ *
+ * @author Linus
+ * @version 1.0
+ * @since 2022-10-03
+ */
 @ExtendWith(SpringExtension.class)
 @WebMvcTest
 @AutoConfigureMockMvc

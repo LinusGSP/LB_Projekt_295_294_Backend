@@ -4,6 +4,19 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+/**This class is the learnWord entity class.
+ * It is used to store the learnWord information in the database.
+ * It has the following fields:
+ *     - id: the id of the learnWord
+ *     - translation: the first word
+ *     - word: the second word
+ *     - learnSetId: the corresponding learnSet where the word is being used
+ *     - marked: boolean value if the word has been marked special
+ *
+ * @author Linus Schönbächler
+ * @version 1.0
+ * @since 2022-10-03
+ */
 @Entity
 @Table(name = "learn_word")
 public class LearnWord {

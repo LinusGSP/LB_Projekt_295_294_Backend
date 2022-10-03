@@ -12,6 +12,16 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Optional;
 
+/**This class is the controller for the LearnWord entity.
+ * This class contains the methods to get, create and delete a language.
+ *
+ * @author Linus Schönbächler
+ * @version 1.0
+ * @since 2022-10-03
+ *
+ */
+
+
 @RestController
 @RequestMapping(path = "/api/word")
 public class LearnWordController {
