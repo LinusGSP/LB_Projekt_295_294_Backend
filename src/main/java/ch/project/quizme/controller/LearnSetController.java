@@ -25,27 +25,28 @@ public class LearnSetController {
         Optional<Iterable<LearnSet>> learnSets = Optional.of(learnSetRepository.findAll());
         return learnSets.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+
     @GetMapping(path = "/{id}")
-    public ResponseEntity<LearnSet> getLearnSetById(@PathVariable("id") Integer id){
+    public ResponseEntity<LearnSet> getLearnSetById(@PathVariable("id") Integer id) {
         Optional<LearnSet> learnSet = learnSetRepository.findById(id);
         return ResponseEntity.ok(learnSet.orElseThrow(() -> new LearnSetNotFoundException(id)));
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLearnSet(@RequestBody LearnSet learnSet){
+    public ResponseEntity<String> createLearnSet(@RequestBody LearnSet learnSet) {
         try {
             learnSetRepository.save(learnSet);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new LearnWordFailedToSaveException();
         }
         return ResponseEntity.ok("Success: saved");
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> deleteLearnSetById(@PathVariable("id") Integer id){
+    public ResponseEntity<String> deleteLearnSetById(@PathVariable("id") Integer id) {
         try {
             learnSetRepository.deleteById(id);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new LearnSetNotFoundException(id);
         }
         return ResponseEntity.ok("Success: deleted");
