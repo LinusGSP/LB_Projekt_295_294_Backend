@@ -1,6 +1,7 @@
 package ch.project.quizme.databases;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "learn_word")
@@ -10,9 +11,11 @@ public class LearnWord {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotEmpty(message = "Name may not be empty")
     @Column(name = "translation", nullable = false, length = 64)
     private String translation;
 
+    @NotEmpty(message = "Word may not be empty")
     @Column(name = "word", nullable = false, length = 64)
     private String word;
 

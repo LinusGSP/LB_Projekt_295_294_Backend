@@ -1,6 +1,7 @@
 package ch.project.quizme.databases;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Entity
@@ -11,6 +12,7 @@ public class LearnSet {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @NotEmpty(message = "Name may not be empty")
     @Column(name = "name", nullable = false, length = 64)
     private String name;
 
