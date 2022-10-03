@@ -1,6 +1,7 @@
 package ch.project.quizme;
 
 import ch.project.quizme.controller.LearnWordController;
+import ch.project.quizme.databases.LearnWord;
 import ch.project.quizme.repository.LanguageRepository;
 import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.LearnWordRepository;
@@ -17,7 +18,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @ExtendWith(SpringExtension.class)
@@ -56,6 +61,7 @@ public class LearnWordControllerTest {
      */
     @Test
     public void CheckGetLearnWordById_isOk() throws Exception{
+        when(learnWordRepository.findById(anyInt())).thenReturn(Optional.of(new LearnWord()));
         mockMvc.perform(MockMvcRequestBuilders.get("/api/word/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -76,6 +82,7 @@ public class LearnWordControllerTest {
      */
     @Test
     public void CheckDeleteLearnWordById_isOk() throws Exception{
+        when(learnWordRepository.findById(anyInt())).thenReturn(Optional.of(new LearnWord()));
         mockMvc.perform(MockMvcRequestBuilders.get("/api/word/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().isOk());
     }

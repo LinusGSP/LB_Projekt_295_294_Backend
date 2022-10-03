@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -37,7 +38,7 @@ public class LearnWordController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<LearnWord> createNewWord(@RequestBody LearnWord learnWord) {
+    public ResponseEntity<LearnWord> createNewWord(@Valid @RequestBody LearnWord learnWord) {
         LearnWord word;
         try {
             word = learnWordRepository.save(learnWord);

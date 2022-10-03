@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +32,7 @@ public class LanguageController {
     }
 
     @PostMapping(path = "")
-    public ResponseEntity<String> createLanguage(@RequestBody Language language) {
+    public ResponseEntity<String> createLanguage(@Valid @RequestBody Language language) {
         try {
             languageRepository.save(language);
         } catch (Exception e) {

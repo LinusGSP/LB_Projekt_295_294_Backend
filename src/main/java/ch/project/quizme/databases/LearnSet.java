@@ -1,7 +1,8 @@
 package ch.project.quizme.databases;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 @Entity
@@ -12,7 +13,8 @@ public class LearnSet {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotEmpty(message = "Name may not be empty")
+    @NotBlank(message = "Name cant be blank")
+    @Size(message = "Name must be at least of length 1 and max of length 64")
     @Column(name = "name", nullable = false, length = 64)
     private String name;
 

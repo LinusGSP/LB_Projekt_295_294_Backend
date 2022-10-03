@@ -1,7 +1,8 @@
 package ch.project.quizme.databases;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "learn_word")
@@ -11,11 +12,13 @@ public class LearnWord {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @NotEmpty(message = "Name may not be empty")
+    @NotBlank(message = "Translation cant be blank")
+    @Size(message = "Translation must be at least of length 1 and max of length 64")
     @Column(name = "translation", nullable = false, length = 64)
     private String translation;
 
-    @NotEmpty(message = "Word may not be empty")
+    @NotBlank(message = "Word cant be blank")
+    @Size(message = "Word must be at least of length 1 and max of length 64")
     @Column(name = "word", nullable = false, length = 64)
     private String word;
 
