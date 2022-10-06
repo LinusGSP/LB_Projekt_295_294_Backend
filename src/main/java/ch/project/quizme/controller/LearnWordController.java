@@ -2,6 +2,7 @@ package ch.project.quizme.controller;
 
 
 import ch.project.quizme.databases.LearnWord;
+import ch.project.quizme.exceptions.LanguageNotFoundException;
 import ch.project.quizme.exceptions.LearnWordFailedToSaveException;
 import ch.project.quizme.exceptions.LearnWordNotFoundException;
 import ch.project.quizme.repository.LearnWordRepository;
@@ -68,6 +69,21 @@ public class LearnWordController {
             throw new LearnWordFailedToSaveException();
         }
         return ResponseEntity.ok("Success: saved");
+    }
+
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<LearnWord> updateWord(@PathVariable("id") Integer id, @Valid @RequestBody LearnWord learnWord) {
+        LearnWord updatedWord = learnWordRepository.findById(id).orElseThrow(() -> new LanguageNotFoundException(id));
+
+        try{
+            updatedWord.setWord(learnWord.getWord());
+            updatedWord.setTranslation(learnWord.getTranslation());
+            learnWordRepository.save(updatedWord);
+
+        } catch(Exception ex) {
+            throw new LearnWordNotFoundException(id);
+        }
+        return ResponseEntity.ok(updatedWord);
     }
 
     @DeleteMapping(path = "/{id}")
