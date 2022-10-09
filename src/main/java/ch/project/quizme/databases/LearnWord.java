@@ -11,7 +11,6 @@ import javax.validation.constraints.Size;
  *     - translation: the first word
  *     - word: the second word
  *     - learnSetId: the corresponding learnSet where the word is being used
- *     - marked: boolean value if the word has been marked special
  *
  * @author Linus Schönbächler
  * @version 1.0
@@ -38,9 +37,6 @@ public class LearnWord {
     @JoinColumn(name = "learn_set_id")
     private Integer learnSetId;
 
-    @Column(columnDefinition = "BOOLEAN default false")
-    private Boolean marked = false;
-
     public Integer getId() {
         return id;
     }
@@ -65,20 +61,11 @@ public class LearnWord {
         this.word = word;
     }
 
-
     public Integer getLearnSetId() {
         return learnSetId;
     }
 
     public void setLearnSetId(Integer learnSetId) {
         this.learnSetId = learnSetId;
-    }
-
-    public Boolean getMarked() {
-        return marked;
-    }
-
-    public void setMarked(Boolean marked) {
-        this.marked = marked;
     }
 }
