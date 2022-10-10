@@ -64,7 +64,6 @@ public class LearnWordController {
             LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
             learnSet.setLastEdited();
             learnSetRepository.save(learnSet);
-            System.out.println(learnSet.getCreationDate());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -97,7 +96,6 @@ public class LearnWordController {
 
             LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
             learnSet.setLastEdited();
-            System.out.println(learnSet.getLastEdited());
 
         } catch(Exception ex) {
             throw new LearnWordNotFoundException(id);
