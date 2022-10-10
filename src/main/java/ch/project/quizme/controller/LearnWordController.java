@@ -1,10 +1,13 @@
 package ch.project.quizme.controller;
 
 
+import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.databases.LearnWord;
 import ch.project.quizme.exceptions.LanguageNotFoundException;
+import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.exceptions.LearnWordFailedToSaveException;
 import ch.project.quizme.exceptions.LearnWordNotFoundException;
+import ch.project.quizme.repository.LearnSetRepository;
 import ch.project.quizme.repository.LearnWordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,9 @@ public class LearnWordController {
     @Autowired
     LearnWordRepository learnWordRepository;
 
+    @Autowired
+    LearnSetRepository learnSetRepository;
+
     @GetMapping(path = "")
     public ResponseEntity<Iterable<LearnWord>> getAllWords() {
         Optional<Iterable<LearnWord>> words = Optional.of(learnWordRepository.findAll());
@@ -53,6 +59,13 @@ public class LearnWordController {
         LearnWord word;
         try {
             word = learnWordRepository.save(learnWord);
+
+            int learnSetId = learnWord.getLearnSetId();
+            LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
+            learnSet.setLastEdited();
+            learnSetRepository.save(learnSet);
+            System.out.println(learnSet.getCreationDate());
+
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new LearnWordFailedToSaveException();
@@ -76,9 +89,15 @@ public class LearnWordController {
         LearnWord updatedWord = learnWordRepository.findById(id).orElseThrow(() -> new LanguageNotFoundException(id));
 
         try{
+            int learnSetId = learnWordRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id)).getLearnSetId();
+
             updatedWord.setWord(learnWord.getWord());
             updatedWord.setTranslation(learnWord.getTranslation());
             learnWordRepository.save(updatedWord);
+
+            LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
+            learnSet.setLastEdited();
+            System.out.println(learnSet.getLastEdited());
 
         } catch(Exception ex) {
             throw new LearnWordNotFoundException(id);
@@ -89,7 +108,9 @@ public class LearnWordController {
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteWord(@PathVariable("id") Integer id) {
         try {
+            int learnSetId = learnWordRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id)).getLearnSetId();
             learnWordRepository.deleteById(id);
+            learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId)).setLastEdited();
         } catch (Exception e) {
             throw new LearnWordNotFoundException(id);
         }

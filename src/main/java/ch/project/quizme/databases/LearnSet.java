@@ -13,7 +13,7 @@ import java.util.Date;
  *     - language1: the language of the first column in the word table (translation)
  *     - language2: the language of the second column in the word table (word)
  *     - creationDate: the date of creation
- *     - lastEdited: the date of the last time the learnset was eddited
+ *     - lastEdited: the date of the last time the learnSet was edited
  *
  * @author Linus Schönbächler
  * @version 1.0
