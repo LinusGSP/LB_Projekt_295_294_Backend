@@ -1,6 +1,7 @@
 package ch.project.quizme.controller;
 
 import ch.project.quizme.databases.LearnSet;
+import ch.project.quizme.exceptions.LanguageIdenticalException;
 import ch.project.quizme.exceptions.LearnSetNotFoundException;
 import ch.project.quizme.exceptions.LearnWordFailedToSaveException;
 import ch.project.quizme.repository.LanguageRepository;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Objects;
 import java.util.Optional;
 
 /**This class is the controller for the LearnSet entity.
@@ -43,6 +45,10 @@ public class LearnSetController {
 
     @PostMapping(path = "")
     public ResponseEntity<String> createLearnSet(@Valid @RequestBody LearnSet learnSet) {
+        if (Objects.equals(learnSet.getLanguage1().getId(), learnSet.getLanguage2().getId())) {
+            throw new LanguageIdenticalException(learnSet.getLanguage1().getId(), learnSet.getLanguage2().getId());
+        }
+
         try {
             learnSetRepository.save(learnSet);
         } catch (Exception e) {

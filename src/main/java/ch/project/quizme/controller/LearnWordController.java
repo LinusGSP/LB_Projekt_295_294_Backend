@@ -50,8 +50,9 @@ public class LearnWordController {
 
     @GetMapping(path = "/set/{id}")
     public ResponseEntity<Iterable<LearnWord>> getLearnSetWords(@PathVariable("id") Integer id) {
-        Optional<Iterable<LearnWord>> words = Optional.of(learnWordRepository.findByLearnSetId(id));
-        return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        learnSetRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id));
+        Iterable<LearnWord> words = learnWordRepository.findByLearnSetId(id);
+        return ResponseEntity.ok(words);
     }
 
     @PostMapping(path = "")
@@ -80,28 +81,23 @@ public class LearnWordController {
     public ResponseEntity<LearnWord> updateWord(@Valid @RequestBody LearnWord learnWord) {
         int id = learnWord.getId();
         LearnWord updatedWord = learnWordRepository.findById(id).orElseThrow(() -> new LanguageNotFoundException(id));
-        try{
-            updatedWord.setWord(learnWord.getWord());
-            updatedWord.setTranslation(learnWord.getTranslation());
-            learnWordRepository.save(updatedWord);
 
-            updateLearnSetLastEdited(updatedWord.getLearnSetId());
-        } catch(Exception ex) {
-            throw new LearnWordNotFoundException(id);
-        }
+        updatedWord.setWord(learnWord.getWord());
+        updatedWord.setTranslation(learnWord.getTranslation());
+        learnWordRepository.save(updatedWord);
+        updateLearnSetLastEdited(updatedWord.getLearnSetId());
+
         return ResponseEntity.ok(updatedWord);
     }
 
     @DeleteMapping(path = "")
     public ResponseEntity<String> deleteWord(@Valid @RequestBody LearnWord learnWord) {
         int id = learnWord.getId();
-        try {
-            learnWordRepository.deleteById(id);
+        learnWordRepository.findById(id).orElseThrow(() -> new LearnWordNotFoundException(id));
 
-            updateLearnSetLastEdited(learnWord.getLearnSetId());
-        } catch (Exception e) {
-            throw new LearnWordNotFoundException(id);
-        }
+        learnWordRepository.deleteById(id);
+        updateLearnSetLastEdited(learnWord.getLearnSetId());
+
         return ResponseEntity.ok("Success: deleted");
     }
 

@@ -53,7 +53,7 @@ public class LanguageController {
     public ResponseEntity<String> deleteLanguage(@PathVariable Integer id) {
         try {
             languageRepository.deleteById(id);
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             throw new LanguageNotFoundException(id);
         }
         return ResponseEntity.ok("Success: deleted");
