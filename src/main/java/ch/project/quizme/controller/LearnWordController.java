@@ -76,7 +76,7 @@ public class LearnWordController {
         return ResponseEntity.ok("Success: saved");
     }
 
-    @PutMapping()
+    @PutMapping(path = "")
     public ResponseEntity<LearnWord> updateWord(@Valid @RequestBody LearnWord learnWord) {
         int id = learnWord.getId();
         LearnWord updatedWord = learnWordRepository.findById(id).orElseThrow(() -> new LanguageNotFoundException(id));
@@ -92,7 +92,7 @@ public class LearnWordController {
         return ResponseEntity.ok(updatedWord);
     }
 
-    @DeleteMapping()
+    @DeleteMapping(path = "")
     public ResponseEntity<String> deleteWord(@Valid @RequestBody LearnWord learnWord) {
         int id = learnWord.getId();
         try {
