@@ -59,17 +59,10 @@ public class LearnWordController {
         LearnWord word;
         try {
             word = learnWordRepository.save(learnWord);
-
-            int learnSetId = learnWord.getLearnSetId();
-            LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
-            learnSet.setLastEdited();
-            learnSetRepository.save(learnSet);
-
+            updateLearnSetLastEdited(word.getLearnSetId());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw new LearnWordFailedToSaveException();
         }
-        System.out.println(word.getId());
         return ResponseEntity.ok(word);
     }
 
@@ -83,35 +76,38 @@ public class LearnWordController {
         return ResponseEntity.ok("Success: saved");
     }
 
-    @PutMapping(path = "/{id}")
-    public ResponseEntity<LearnWord> updateWord(@PathVariable("id") Integer id, @Valid @RequestBody LearnWord learnWord) {
+    @PutMapping()
+    public ResponseEntity<LearnWord> updateWord(@Valid @RequestBody LearnWord learnWord) {
+        int id = learnWord.getId();
         LearnWord updatedWord = learnWordRepository.findById(id).orElseThrow(() -> new LanguageNotFoundException(id));
-
         try{
-            int learnSetId = learnWordRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id)).getLearnSetId();
-
             updatedWord.setWord(learnWord.getWord());
             updatedWord.setTranslation(learnWord.getTranslation());
             learnWordRepository.save(updatedWord);
 
-            LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
-            learnSet.setLastEdited();
-
+            updateLearnSetLastEdited(updatedWord.getLearnSetId());
         } catch(Exception ex) {
             throw new LearnWordNotFoundException(id);
         }
         return ResponseEntity.ok(updatedWord);
     }
 
-    @DeleteMapping(path = "/{id}")
-    public ResponseEntity<String> deleteWord(@PathVariable("id") Integer id) {
+    @DeleteMapping()
+    public ResponseEntity<String> deleteWord(@Valid @RequestBody LearnWord learnWord) {
+        int id = learnWord.getId();
         try {
-            int learnSetId = learnWordRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id)).getLearnSetId();
             learnWordRepository.deleteById(id);
-            learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId)).setLastEdited();
+
+            updateLearnSetLastEdited(learnWord.getLearnSetId());
         } catch (Exception e) {
             throw new LearnWordNotFoundException(id);
         }
         return ResponseEntity.ok("Success: deleted");
+    }
+
+    private void updateLearnSetLastEdited(int learnSetId){
+        LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
+        learnSet.setLastEdited();
+        learnSetRepository.save(learnSet);
     }
 }
