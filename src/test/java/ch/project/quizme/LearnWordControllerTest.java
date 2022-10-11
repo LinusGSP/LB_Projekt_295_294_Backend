@@ -1,6 +1,7 @@
 package ch.project.quizme;
 
 import ch.project.quizme.controller.LearnWordController;
+import ch.project.quizme.databases.LearnSet;
 import ch.project.quizme.databases.LearnWord;
 import ch.project.quizme.repository.LanguageRepository;
 import ch.project.quizme.repository.LearnSetRepository;
@@ -78,6 +79,7 @@ public class LearnWordControllerTest {
      */
     @Test
     public void CheckGetLearnSetWordsByLearnSetId_isOk() throws Exception{
+        when(learnSetRepository.findById(anyInt())).thenReturn(Optional.of(new LearnSet()));
         mockMvc.perform(MockMvcRequestBuilders.get("/api/word/set/{id}", 1))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));

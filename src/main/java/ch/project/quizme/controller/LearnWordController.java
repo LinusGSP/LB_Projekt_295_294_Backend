@@ -90,13 +90,12 @@ public class LearnWordController {
         return ResponseEntity.ok(updatedWord);
     }
 
-    @DeleteMapping(path = "")
-    public ResponseEntity<String> deleteWord(@Valid @RequestBody LearnWord learnWord) {
-        int id = learnWord.getId();
-        learnWordRepository.findById(id).orElseThrow(() -> new LearnWordNotFoundException(id));
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<String> deleteWord(@PathVariable("id") Integer id) {
+        LearnWord LearnWord = learnWordRepository.findById(id).orElseThrow(() -> new LearnWordNotFoundException(id));
 
         learnWordRepository.deleteById(id);
-        updateLearnSetLastEdited(learnWord.getLearnSetId());
+        updateLearnSetLastEdited(LearnWord.getLearnSetId());
 
         return ResponseEntity.ok("Success: deleted");
     }
