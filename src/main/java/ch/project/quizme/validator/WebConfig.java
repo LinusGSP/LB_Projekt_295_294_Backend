@@ -6,7 +6,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /** This class is used to enable CORS for the application.
- *  This is required for the application to work with the frontend.
+ *  This is required for the application to accept all HTTP methods.
  *
  * @author Linus Schönbächler
  * @version 1.0

@@ -36,18 +36,35 @@ public class LearnWordController {
     @Autowired
     LearnSetRepository learnSetRepository;
 
+    /**
+     * This method gets all learnWords in the database.
+     *
+     * @return All learnWords
+     */
     @GetMapping(path = "")
     public ResponseEntity<Iterable<LearnWord>> getAllWords() {
         Optional<Iterable<LearnWord>> words = Optional.of(learnWordRepository.findAll());
         return words.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    /**
+     * This method gets a learnWord with a unique id.
+     *
+     * @param id The id of the learnWord.
+     * @return The learnWord.
+     */
     @GetMapping(path = "/{id}")
     public ResponseEntity<LearnWord> getWord(@PathVariable("id") Integer id) {
         Optional<LearnWord> word = learnWordRepository.findById(id);
         return ResponseEntity.ok(word.orElseThrow(() -> new LearnWordNotFoundException(id)));
     }
 
+    /**
+     * This method gets all learnWords with a specific id.
+     *
+     * @param id The id of the learnSet.
+     * @return The learnWords of the learnSet.
+     */
     @GetMapping(path = "/set/{id}")
     public ResponseEntity<Iterable<LearnWord>> getLearnSetWords(@PathVariable("id") Integer id) {
         learnSetRepository.findById(id).orElseThrow(() -> new LearnSetNotFoundException(id));
@@ -55,6 +72,12 @@ public class LearnWordController {
         return ResponseEntity.ok(words);
     }
 
+    /**
+     * This method creates a new learnWord.
+     *
+     * @param learnWord The learnWord to be created.
+     * @return The created learnWord
+     */
     @PostMapping(path = "")
     public ResponseEntity<LearnWord> createNewWord(@Valid @RequestBody LearnWord learnWord) {
         LearnWord word;
@@ -67,6 +90,12 @@ public class LearnWordController {
         return ResponseEntity.ok(word);
     }
 
+    /**
+     * This method creates a list of new learnWords.
+     *
+     * @param learnWords The learnWords to be created.
+     * @return Successful
+     */
     @PostMapping(path = "/set")
     public ResponseEntity<String> createNewWords(@RequestBody Iterable<LearnWord> learnWords) {
         try {
@@ -77,6 +106,12 @@ public class LearnWordController {
         return ResponseEntity.ok("Success: saved");
     }
 
+    /**
+     * This method edits an existing learnWord.
+     *
+     * @param learnWord The edited learnWord.
+     * @return The newly updated learnWord.
+     */
     @PutMapping(path = "")
     public ResponseEntity<LearnWord> updateWord(@Valid @RequestBody LearnWord learnWord) {
         int id = learnWord.getId();
@@ -90,6 +125,12 @@ public class LearnWordController {
         return ResponseEntity.ok(updatedWord);
     }
 
+    /**
+     * This method deletes a learnWord.
+     *
+     * @param id The id of the deleted learnWord.
+     * @return Successful.
+     */
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<String> deleteWord(@PathVariable("id") Integer id) {
         LearnWord LearnWord = learnWordRepository.findById(id).orElseThrow(() -> new LearnWordNotFoundException(id));
@@ -100,6 +141,11 @@ public class LearnWordController {
         return ResponseEntity.ok("Success: deleted");
     }
 
+    /**
+     * This is a helper function to update the lastEdited time of a learnSet.
+     *
+     * @param learnSetId The id of the learnSet which should be updated.
+     */
     private void updateLearnSetLastEdited(int learnSetId){
         LearnSet learnSet = learnSetRepository.findById(learnSetId).orElseThrow(() -> new LearnSetNotFoundException(learnSetId));
         learnSet.setLastEdited();
