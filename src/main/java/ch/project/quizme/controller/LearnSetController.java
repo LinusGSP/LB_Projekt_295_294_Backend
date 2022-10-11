@@ -14,13 +14,13 @@ import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Optional;
 
-/**This class is the controller for the LearnSet entity.
+/**
+ * This class is the controller for the LearnSet entity.
  * This class contains the methods to get, create and delete a language.
  *
  * @author Linus Schönbächler
  * @version 1.0
  * @since 2022-10-03
- *
  */
 @RestController
 @RequestMapping(path = "/api/learnset")

@@ -5,12 +5,13 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 
-/**This class is the Language entity class.
+/**
+ * This class is the Language entity class.
  * It is used to store the language information in the database.
  * It has the following fields:
- *     - id: the id of the language
- *     - name: the name of the language
- *     - flag: the 2 letter unicode for the flag
+ * - id: the id of the language
+ * - name: the name of the language
+ * - flag: the 2 letter unicode for the flag
  *
  * @author Linus Schönbächler
  * @version 1.0

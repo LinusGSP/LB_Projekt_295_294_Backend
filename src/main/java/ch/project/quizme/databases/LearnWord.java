@@ -4,13 +4,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-/**This class is the learnWord entity class.
+/**
+ * This class is the learnWord entity class.
  * It is used to store the learnWord information in the database.
  * It has the following fields:
- *     - id: the id of the learnWord
- *     - translation: the first word
- *     - word: the second word
- *     - learnSetId: the corresponding learnSet where the word is being used
+ * - id: the id of the learnWord
+ * - translation: the first word
+ * - word: the second word
+ * - learnSetId: the corresponding learnSet where the word is being used
  *
  * @author Linus Schönbächler
  * @version 1.0

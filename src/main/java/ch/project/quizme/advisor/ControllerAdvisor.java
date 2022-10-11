@@ -15,12 +15,13 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.HashMap;
 import java.util.Map;
 
-/**This class handles exceptions thrown by the application.
+/**
+ * This class handles exceptions thrown by the application.
  * It returns a Json object with the corresponding error
  *
- @author Linus Schönbächler
- @version 1.0
- @since 2022-10-03
+ * @author Linus Schönbächler
+ * @version 1.0
+ * @since 2022-10-03
  */
 
 @ControllerAdvice
